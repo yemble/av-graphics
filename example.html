@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>AvGraphics Test</title>
+
+		<script src="avgraphics.js"></script>
+
+		<style>
+			* {
+				font-family: sans-serif;
+			}
+			.wrapper {
+				display: inline-block;
+				border: 1px dashed red;
+				margin: 1em;
+			}
+		</style>
+	</head>
+	<body class="force">
+		<div id="page-wrapper">
+			<section id="test">
+				<div class="wrapper"><svg id="pyramid1"/></div>
+				<div class="wrapper"><svg id="legend1"/></div>
+				<div class="wrapper"><svg id="rose1"/></div>
+			</section>
+
+			<script type="text/javascript">
+
+				AvGraphics.drawPyramid(document.getElementById('pyramid1'), {
+					data : {
+						"alp": "5:extreme",
+						"tl": "4:high:pockets",
+						"btl": "2:moderate"
+					}
+				});
+
+				AvGraphics.drawLegend(document.getElementById('legend1'), {
+					"showPockets" : true
+				});
+
+				AvGraphics.drawRose(document.getElementById('rose1'), {
+					data : [
+						{
+							"title": "above 9,500ft",
+							"dangers": {"n" : 5, "ne": 5, "e": 4, "se": 4, "s" : 3, "sw": 3, "w": 4, "nw": 4}
+						},
+						{
+							"title": "near treeline",
+							"dangers": {"n" : 3, "ne": 3, "e": 3, "se": 4, "s" : 2, "sw": 2, "w": 4, "nw": 4}
+						},
+						{
+							"title": "below treeline",
+							"dangers": {"n" : 1, "ne": 3, "e": 1, "se": 2, "s" : 2, "sw": 2, "w": 1, "nw": 1}
+						}
+					]
+				});
+
+			</script>
+
+		</div>
+	</body>
+</html>
