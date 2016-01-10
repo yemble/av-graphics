@@ -37,33 +37,51 @@ var AvGraphics = (function() {
 
 	
 	return {
+		config: {
+			colors: {
+				low: 'lightgreen',
+				moderate: 'yellow',
+				considerable: 'orange',
+				high: 'red',
+				extreme: 'black'
+			}
+		},
+
+		configure: function(newConfig) {
+			if(newConfig.colors) {
+				for(var x in newConfig.colors) {
+					this.config.colors[x] = newConfig.colors[x];
+				}
+			}
+		},
+
 		// expand a "3:considerable" string into useful attributes
 		decodeDanger: function(str) {
 			return [
 				{
 					'number' : 1,
 					'title' : 'low',
-					'fill' : 'green'
+					'fill' : this.config.colors.low
 				},
 				{
 					'number' : 2,
 					'title' : 'moderate',
-					'fill' : 'yellow'
+					'fill' : this.config.colors.moderate
 				},
 				{
 					'number' : 3,
 					'title' : 'considerable',
-					'fill' : 'orange'
+					'fill' : this.config.colors.considerable
 				},
 				{
 					'number' : 4,
 					'title' : 'high',
-					'fill' : 'red'
+					'fill' : this.config.colors.high
 				},
 				{
 					'number' : 5,
 					'title' : 'extreme',
-					'fill' : 'black'
+					'fill' : this.config.colors.extreme
 				}
 			][ String(str).split(':')[0]-1 ];
 		},
