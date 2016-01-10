@@ -1,0 +1,23 @@
+{
+  "name": "av-graphics",
+  "version": "1.0.0",
+  "homepage": "https://github.com/yemble/av-graphics",
+  "authors": [
+    "Zach Bagnall <zach@y3m.net>"
+  ],
+  "description": "Avalanche bulletin images lib",
+  "main": "gulpfile.js",
+  "keywords": [
+    "avalanche",
+    "svg",
+    "rose"
+  ],
+  "license": "ISC",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
