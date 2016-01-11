@@ -77,8 +77,8 @@ var AvGraphics = (function() {
 		},
 
 		// expand a "3:considerable" string into useful attributes
-		decodeDanger: function(str) {
-			var DANGERS = [
+		getDangerInfo: function(data) {
+			var CONVENTION = [
 				{
 					'number' : 1,
 					'title' : 'low',
@@ -106,13 +106,11 @@ var AvGraphics = (function() {
 				}
 			];
 
-			var parts = String(str).split(':');
+			var info = CONVENTION[ data.danger - 1 ];
 
-			var danger = DANGERS[ parts[0]-1 ];
+			info.pockets = (data.danger < 5 && data.pockets) ? CONVENTION[ data.danger ] : false;
 
-			danger.pockets = (danger.number < 5 && parts.length > 2 && parts[2] == 'pockets') ? DANGERS[ danger.number ] : false;
-
-			return danger;
+			return info;
 		},
 
 		drawPyramid: function(svg, options) {
@@ -120,7 +118,7 @@ var AvGraphics = (function() {
 
 			var data = options.data;
 
-			var nLayers = sizeOfObject(data);
+			var nLayers = data.length;
 
 			if(nLayers < 1) {
 				return;
@@ -142,9 +140,8 @@ var AvGraphics = (function() {
 
 			var midx = fullWidth / 2;
 
-			var i = 0;
-			for(var name in data) {
-				var danger = this.decodeDanger(data[name]);
+			for(var i in data) {
+				var danger = this.getDangerInfo(data[i]);
 
 				var top = (i == 0);
 
@@ -193,8 +190,6 @@ var AvGraphics = (function() {
 						overlay: overlay
 					});
 				}
-
-				i++;
 			}
 
 			removeChildren(svg);
@@ -233,11 +228,6 @@ var AvGraphics = (function() {
 					var style = 'fill:' + circ.fill + '; opacity: 1.0; stroke:black; stroke-width:0.4';
 
 					appendChild(svg,
-						/*makeSVG('rect', {
-							'x': rect.x, 'y': rect.y,
-							'width': rect.width, 'height': rect.height,
-							'style': style
-						})*/
 						makeSVG('circle', {
 							'cx': circ.x, 'cy': circ.y,
 							'r': circ.radius,
@@ -256,9 +246,6 @@ var AvGraphics = (function() {
 				}
 
 			}
-
-
-			// TODO: support elevation indications?
 		},
 
 		drawDangerLegend: function(svg, options) {
@@ -280,7 +267,8 @@ var AvGraphics = (function() {
 			var itemGap = fullHeight * 0.2 / (nItems-1);
 
 			for(var i = 1; i <= nItems; i++) {
-				var danger = i < 6 ? this.decodeDanger(String(6-i)) : {};
+				var key = {danger: 6-i};
+				var danger = i < 6 ? this.getDangerInfo(key) : {};
 
 				var fill = danger.fill || 'white';
 				var text = danger.title || 'Pockets of higher danger';
@@ -408,7 +396,7 @@ var AvGraphics = (function() {
 						);
 					}
 
-					var danger = this.decodeDanger(level.dangers[heading]);
+					var danger = this.getDangerInfo({danger: level.dangers[heading]});
 
 					polys.push({
 						points: points,
@@ -470,8 +458,6 @@ var AvGraphics = (function() {
 					}, text.text)
 				);
 			}
-
-			// TODO: elevation diagram
 		},
 
 		drawElevationLegend: function(svg, options) {
@@ -505,7 +491,7 @@ var AvGraphics = (function() {
 
 			for(var i in data) {
 				i = parseInt(i);
-				var title = data[i];
+				var title = data[i].label;
 
 				var width = eleWidth * (i+1)/nLayers;
 				var height = eleHeight / nLayers;

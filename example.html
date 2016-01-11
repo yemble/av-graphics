@@ -43,11 +43,11 @@
 			});
 
 			AvGraphics.drawPyramid(document.getElementById('pyramid1'), {
-				data : {
-					"alp": "4:high",
-					"tl": "3:considerable:pockets",
-					"btl": "1:low:pockets"
-				}
+				data : [
+					{'danger':4},
+					{'danger':3, 'pockets': true},
+					{'danger':1, 'pockets': true}
+				]
 			});
 
 			AvGraphics.drawDangerLegend(document.getElementById('legend1'), {
@@ -56,26 +56,17 @@
 
 			AvGraphics.drawRose(document.getElementById('rose1'), {
 				data : [
-					{
-						"title": "above 9,500ft",
-						"dangers": {"n" : 5, "ne": 5, "e": 4, "se": 4, "s" : 3, "sw": 3, "w": 4, "nw": 4}
-					},
-					{
-						"title": "near treeline",
-						"dangers": {"n" : 3, "ne": 3, "e": 3, "se": 4, "s" : 2, "sw": 2, "w": 4, "nw": 4}
-					},
-					{
-						"title": "below treeline",
-						"dangers": {"n" : 1, "ne": 3, "e": 1, "se": 2, "s" : 2, "sw": 2, "w": 1, "nw": 1}
-					}
+					{"dangers": {"n" : 5, "ne": 5, "e": 4, "se": 4, "s" : 3, "sw": 3, "w": 4, "nw": 4}},
+					{"dangers": {"n" : 3, "ne": 3, "e": 3, "se": 4, "s" : 2, "sw": 2, "w": 4, "nw": 4}},
+					{"dangers": {"n" : 1, "ne": 3, "e": 1, "se": 2, "s" : 2, "sw": 2, "w": 1, "nw": 1}}
 				]
 			});
 
 			AvGraphics.drawElevationLegend(document.getElementById('legend2'), {
 				data : [
-					"above 9,500ft",
-					"near treeline",
-					"below treeline"
+					{'label':"above 9,500ft"},
+					{'label':"near treeline"},
+					{'label':"below treeline"}
 				],
 				aspect: 5/2
 			});
