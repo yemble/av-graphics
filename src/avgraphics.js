@@ -30,7 +30,7 @@ var AvGraphics = (function() {
 		else {
 			if(rect.height == 0) {
 				// set height to default
-				svg.style.height = defaultHeight;
+				svg.style.height = defaultHeightStyle;
 			}
 
 			// set width by aspect
