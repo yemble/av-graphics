@@ -114,7 +114,7 @@ var AvGraphics = (function() {
 		},
 
 		drawPyramid: function(svg, options) {
-			console.log(['drawPyramid', svg, options]);
+			//console.log(['drawPyramid', svg, options]);
 
 			var data = options.data;
 
@@ -134,13 +134,13 @@ var AvGraphics = (function() {
 			svg.setAttribute('viewBox', '0 0 '+xmax+' '+ymax);
 
 			var fullHeight = ymax - margin*2;
-			var fullWidth = fullHeight;
+			var fullWidth = xmax - margin*2;
 			var layerHeight = fullHeight / nLayers;
 			var layerWidthUnit = fullWidth / nLayers / 2;
 
 			var midx = fullWidth / 2;
 
-			for(var i in data) {
+			for(var i = 0; i < data.length; i++) {
 				var danger = this.getDangerInfo(data[i]);
 
 				var top = (i == 0);
@@ -244,12 +244,11 @@ var AvGraphics = (function() {
 						}, String(poly.overlay.text))
 					);
 				}
-
 			}
 		},
 
 		drawDangerLegend: function(svg, options) {
-			console.log(['drawDangerLegend', svg, options]);
+			//console.log(['drawDangerLegend', svg, options]);
 
 			var nItems = 5 + (options.showPockets ? 1 : 0);
 
@@ -322,7 +321,7 @@ var AvGraphics = (function() {
 		},
 
 		drawRose: function(svg, options) {
-			console.log(['drawRose', svg, options]);
+			//console.log(['drawRose', svg, options]);
 
 			var data = options.data;
 
@@ -356,8 +355,7 @@ var AvGraphics = (function() {
 				];
 			};
 
-			for(var i in data) {
-				i = parseInt(i);
+			for(var i = 0; i < data.length; i++) {
 				var level = data[i];
 
 				var outer1 = (i+1) * depth;
@@ -374,8 +372,6 @@ var AvGraphics = (function() {
 					if(h0 >= 360) h0 -= 360;
 					if(h1 >= 360) h1 -= 360;
 					if(h2 >= 360) h2 -= 360;
-
-					//console.log(['poly', i, outer0, outer1, h1]);
 
 					var points = [
 						toc(outer0, h0),
@@ -410,8 +406,6 @@ var AvGraphics = (function() {
 
 				var h1 = j * arc;
 				if(h1 >= 360) h1 -= 360;
-
-				//console.log(['text', h1, heading]);
 
 				texts.push({
 					centre: toc(maxRadius + depth*2/3, h1),
@@ -461,7 +455,7 @@ var AvGraphics = (function() {
 		},
 
 		drawElevationLegend: function(svg, options) {
-			console.log(['drawElevationLegend', svg, options]);
+			//console.log(['drawElevationLegend', svg, options]);
 
 			var data = options.data;
 
@@ -489,8 +483,7 @@ var AvGraphics = (function() {
 			var eleHeight = fullHeight;
 			var eleMid = margin + eleWidth/2;
 
-			for(var i in data) {
-				i = parseInt(i);
+			for(var i = 0; i < data.length; i++) {
 				var title = data[i].label;
 
 				var width = eleWidth * (i+1)/nLayers;
