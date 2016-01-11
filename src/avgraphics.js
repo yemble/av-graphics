@@ -18,13 +18,13 @@ var AvGraphics = (function() {
 		parent.appendChild(child);
 	};
 
-	function setContainerSize(svg, aspectWidth, aspectHeight, defaultHeightStyle) {
+	function setContainerSize(svg, aspectRatio, defaultHeightStyle) {
 		var rect = svg.getBoundingClientRect();
 
 		if(rect.width > rect.height) {
 			// set height by aspect
 
-			var height = rect.width * aspectHeight / aspectWidth;
+			var height = rect.width / aspectRatio;
 			svg.style.height = height+'px';
 		}
 		else {
@@ -34,7 +34,7 @@ var AvGraphics = (function() {
 			}
 
 			// set width by aspect
-			var width = rect.height * aspectWidth / aspectHeight;
+			var width = rect.height * aspectRatio;
 			svg.style.width = width+'px';
 		}
 	};
@@ -115,10 +115,10 @@ var AvGraphics = (function() {
 			return danger;
 		},
 
-		drawPyramid: function(svg, config) {
-			console.log(['drawPyramid', svg, config]);
+		drawPyramid: function(svg, options) {
+			console.log(['drawPyramid', svg, options]);
 
-			var data = config.data;
+			var data = options.data;
 
 			var nLayers = sizeOfObject(data);
 
@@ -128,9 +128,11 @@ var AvGraphics = (function() {
 
 			var polys = [];
 
-			var xmax = 100, ymax = 100, margin = 10;
+			var aspect = options.aspect || 1/1;			
 
-			setContainerSize(svg, 1, 1, '10em');
+			var xmax = 100*aspect, ymax = 100, margin = 10;
+
+			setContainerSize(svg, aspect, '10em');
 			svg.setAttribute('viewBox', '0 0 '+xmax+' '+ymax);
 
 			var fullHeight = ymax - margin*2;
@@ -220,7 +222,7 @@ var AvGraphics = (function() {
 						'x': poly.centre[0],
 						'y': poly.centre[1] + layerHeight/15,
 						'text-anchor': 'middle',
-						'style': 'dominant-baseline:central; font-size: 60%; stroke-width:1; stroke: ' + poly.textFore + '; fill: ' + poly.textFore
+						'style': 'dominant-baseline:middle; font-size: 60%; stroke-width:0.6; stroke: ' + poly.textFore + '; fill: ' + poly.textFore
 					}, poly.text)
 				);
 
@@ -248,7 +250,7 @@ var AvGraphics = (function() {
 							'x': circ.x,
 							'y': circ.y,
 							'text-anchor': 'middle',
-							'style': 'dominant-baseline:central; font-size: 40%; stroke-width:0.6; stroke: ' + poly.overlay.textFore + '; fill: ' + poly.overlay.textFore
+							'style': 'dominant-baseline:middle; font-size: 40%; stroke-width:0.5; stroke: ' + poly.overlay.textFore + '; fill: ' + poly.overlay.textFore
 						}, String(poly.overlay.text))
 					);
 				}
@@ -259,16 +261,18 @@ var AvGraphics = (function() {
 			// TODO: support elevation indications?
 		},
 
-		drawLegend: function(svg, config) {
-			console.log(['drawLegend', svg, config]);
+		drawDangerLegend: function(svg, options) {
+			console.log(['drawDangerLegend', svg, options]);
 
-			var nItems = 5 + (config.showPockets ? 1 : 0);
+			var nItems = 5 + (options.showPockets ? 1 : 0);
 
 			var rects = [];
 
-			var xmax = 150, ymax = 100, margin = 10;
+			var aspect = options.aspect || 3/2;
 
-			setContainerSize(svg, 3, 2, '10em');
+			var xmax = 100*aspect, ymax = 100, margin = 10;
+
+			setContainerSize(svg, aspect, '10em');
 			svg.setAttribute('viewBox', '0 0 '+xmax+' '+ymax);
 
 			var fullHeight = ymax - margin*2;
@@ -314,7 +318,7 @@ var AvGraphics = (function() {
 						'x': rect.x + rect.width / 2,
 						'y': rect.y + rect.height / 2,
 						'text-anchor': 'middle',
-						'style': 'dominant-baseline:central; font-size: 40%; stroke-width:0.6; stroke: ' + rect.textFore + '; fill: ' + rect.textFore
+						'style': 'dominant-baseline:middle; font-size: 40%; stroke-width:0.5; stroke: ' + rect.textFore + '; fill: ' + rect.textFore
 					}, String(rect.text))
 				);
 
@@ -323,16 +327,16 @@ var AvGraphics = (function() {
 						'x': rect.labelPos[0],
 						'y': rect.labelPos[1] + rect.height/15,
 						//'text-anchor': 'middle',
-						'style': 'dominant-baseline:central; font-size: 50%;'
+						'style': 'dominant-baseline:middle; font-size: 50%;'
 					}, initialCap(rect.labelText))
 				);
 			}
 		},
 
-		drawRose: function(svg, config) {
-			console.log(['drawRose', svg, config]);
+		drawRose: function(svg, options) {
+			console.log(['drawRose', svg, options]);
 
-			var data = config.data;
+			var data = options.data;
 
 			var nLayers = sizeOfObject(data);
 
@@ -342,9 +346,11 @@ var AvGraphics = (function() {
 
 			var polys = [], texts = [], rects = [];
 
-			var xmax = 200, ymax = 100, margin = 10, textMargin = 10;
+			var aspect = options.aspect || 1/1;
 
-			setContainerSize(svg, 2, 1, '10em');
+			var xmax = 100*aspect, ymax = 100, margin = 10, textMargin = 10;
+
+			setContainerSize(svg, aspect, '10em');
 			svg.setAttribute('viewBox', '0 0 '+xmax+' '+ymax);
 
 			var maxRadius = (ymax - textMargin*2 - margin*2) / 2;
@@ -430,24 +436,6 @@ var AvGraphics = (function() {
 			var eleHeight = maxRadius;
 			var eleMid = elex + eleWidth/2;
 
-			for(var i in data) {
-				i = parseInt(i);
-				var level = data[i];
-
-				var width = eleWidth * (i+1)/nLayers;
-				var height = eleHeight / nLayers;
-				var offx = eleMid - width/2;
-				var offy = eley + i*height;
-
-				rects.push({
-					x: offx, y: offy,
-					width: width, height: height,
-					fill: 'white',
-					labelPos: [offx+width+margin/2, offy+height/2],
-					labelText: level.title
-				});
-			}
-
 			removeChildren(svg);
 
 			for(var i in polys) {
@@ -470,6 +458,71 @@ var AvGraphics = (function() {
 				);
 			}
 
+			for(var i in texts) {
+				var text = texts[i];
+
+				appendChild(svg,
+					makeSVG('text', {
+						'x': text.centre[0],
+						'y': text.centre[1],
+						'text-anchor': 'middle',
+						'style': 'dominant-baseline: middle; font-size: 40%; text-transform: uppercase;'
+					}, text.text)
+				);
+			}
+
+			// TODO: elevation diagram
+		},
+
+		drawElevationLegend: function(svg, options) {
+			console.log(['drawElevationLegend', svg, options]);
+
+			var data = options.data;
+
+			var nLayers = data.length;
+
+			if(nLayers < 1) {
+				return;
+			}
+
+			var rects = [];
+
+			var aspect = options.aspect || 2/1;
+
+			var xmax = 100*aspect, ymax = 100, margin = 20;
+
+			setContainerSize(svg, aspect, '5em');
+			svg.setAttribute('viewBox', '0 0 '+xmax+' '+ymax);
+
+			var fullHeight = ymax - margin*2;
+			var fullWidth = xmax - margin*2;
+			var depth = fullHeight / nLayers;
+			var textRight = xmax - margin;
+
+			var eleWidth = fullWidth/2;
+			var eleHeight = fullHeight;
+			var eleMid = margin + eleWidth/2;
+
+			for(var i in data) {
+				i = parseInt(i);
+				var title = data[i];
+
+				var width = eleWidth * (i+1)/nLayers;
+				var height = eleHeight / nLayers;
+				var offx = eleMid - width/2;
+				var offy = margin + i*height;
+
+				rects.push({
+					x: offx, y: offy,
+					width: width, height: height,
+					fill: 'white',
+					labelY: offy+height/2,
+					labelText: title
+				});
+			}
+
+			removeChildren(svg);
+
 			for(var i in rects) {
 				var rect = rects[i];
 
@@ -485,28 +538,13 @@ var AvGraphics = (function() {
 
 				appendChild(svg,
 					makeSVG('text', {
-						'x': rect.labelPos[0],
-						'y': rect.labelPos[1],
-						//'text-anchor': 'middle',
-						'style': 'dominant-baseline:central; font-size: 40%;'
+						'y': rect.labelY,
+						'x': textRight,
+						'text-anchor': 'end',
+						'style': 'dominant-baseline: middle; font-size: 80%;'
 					}, initialCap(rect.labelText))
 				);
 			}
-
-			for(var i in texts) {
-				var text = texts[i];
-
-				appendChild(svg,
-					makeSVG('text', {
-						'x': text.centre[0],
-						'y': text.centre[1],
-						'text-anchor': 'middle',
-						'style': 'dominant-baseline:central; font-size: 30%; text-transform: uppercase;'
-					}, text.text)
-				);
-			}
-
-			// TODO: elevation diagram
 		}
 
 	};

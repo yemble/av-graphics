@@ -17,17 +17,20 @@
 
 			.graphic svg {
 				/* initial size; width will be set by lib */
-				height: 10em;
+				height: 15em;
 				width: 0;
 			}
 
 		</style>
 	</head>
 	<body class="force">
-		<section id="test">
+		<section id="pyramid">
 			<div class="graphic"><svg id="pyramid1"/></div>
 			<div class="graphic"><svg id="legend1"/></div>
+		<section id="rose">
+		</section>
 			<div class="graphic"><svg id="rose1"/></div>
+			<div class="graphic"><svg id="legend2" style="height: 8em" /></div>
 		</section>
 
 		<script type="text/javascript">
@@ -47,7 +50,7 @@
 				}
 			});
 
-			AvGraphics.drawLegend(document.getElementById('legend1'), {
+			AvGraphics.drawDangerLegend(document.getElementById('legend1'), {
 				"showPockets" : true
 			});
 
@@ -66,6 +69,15 @@
 						"dangers": {"n" : 1, "ne": 3, "e": 1, "se": 2, "s" : 2, "sw": 2, "w": 1, "nw": 1}
 					}
 				]
+			});
+
+			AvGraphics.drawElevationLegend(document.getElementById('legend2'), {
+				data : [
+					"above 9,500ft",
+					"near treeline",
+					"below treeline"
+				],
+				aspect: 5/2
 			});
 		
 		</script>

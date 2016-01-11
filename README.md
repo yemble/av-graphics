@@ -1,6 +1,6 @@
 # av-graphics
 
-A small lib to render common avalanche bulletin images via JSON and SVG.
+A small lib to render common avalanche bulletin images (elevation pyramid, rose, legends) via JSON and SVG.
 
 ```html
 <svg id="pyramid1"/>
@@ -17,5 +17,5 @@ A small lib to render common avalanche bulletin images via JSON and SVG.
 </script>
 ```
 
-<img src="http://i.imgur.com/yc7ZTBl.png" alt="Sample output" style="max-width: 90%;"/>
+<img src="http://i.imgur.com/Q57gME0.png" alt="Sample output" style="max-width: 90%;"/>
 
