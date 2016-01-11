@@ -56,9 +56,21 @@
 
 			AvGraphics.drawRose(document.getElementById('rose1'), {
 				data : [
-					{"dangers": {"n" : 5, "ne": 5, "e": 4, "se": 4, "s" : 3, "sw": 3, "w": 4, "nw": 4}},
-					{"dangers": {"n" : 3, "ne": 3, "e": 3, "se": 4, "s" : 2, "sw": 2, "w": 4, "nw": 4}},
-					{"dangers": {"n" : 1, "ne": 3, "e": 1, "se": 2, "s" : 2, "sw": 2, "w": 1, "nw": 1}}
+					{"dangers": {
+						"nw": 3, "n": 2, "ne": 2,
+						"w":  3,         "e":  2,
+						"sw": 4, "s": 4, "se": 3
+					}},
+					{"dangers": {
+						"nw": 2, "n": 2, "ne": 2,
+						"w":  3,         "e":  3,
+						"sw": 3, "s": 3, "se": 3
+					}},
+					{"dangers": {
+						"nw": 2, "n": 1, "ne": 1,
+						"w":  2,         "e":  1,
+						"sw": 2, "s": 2, "se": 2
+					}},
 				]
 			});
 
