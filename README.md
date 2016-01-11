@@ -1,6 +1,6 @@
 # av-graphics
 
-A small lib to render common avalanche bulletin images (elevation pyramid, rose, legends) via JSON and SVG.
+A small client-side Javascript lib to render common avalanche bulletin images (elevation pyramid, rose, legends) from raw data.
 
 ### Code snippet
 
