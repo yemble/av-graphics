@@ -5,15 +5,19 @@ var gulp   = require('gulp'),
     concat = require('gulp-concat'),
     del = require('del');
 
-gulp.task('dist', function() {
+gulp.task('hint', function() {
     gulp.src('./src/*.js')
       .pipe(jshint())
       .pipe(jshint.reporter())
+});
+
+gulp.task('dist', function() {
+    gulp.src('./src/*.js')
       .pipe(concat('avgraphics.js'))
       .pipe(gulp.dest('./dist/'))
       .pipe(rename({suffix: '.min'}))
       .pipe(uglify())
-      .pipe(gulp.dest('./dist/'));
+      .pipe(gulp.dest('./dist/'))
 });
 
 gulp.task('default', [], function() {

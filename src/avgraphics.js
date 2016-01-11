@@ -12,11 +12,11 @@ var AvGraphics = (function() {
 	// DOM empty wrapper
 	function removeChildren(parent) {
 		parent.innerHTML = '';
-	};
+	}
 	// DOM append wrapper
 	function appendChild(parent, child) {
 		parent.appendChild(child);
-	};
+	}
 
 	function setContainerSize(svg, aspectRatio, defaultHeightStyle) {
 		var rect = svg.getBoundingClientRect();
@@ -28,7 +28,7 @@ var AvGraphics = (function() {
 			svg.style.height = height+'px';
 		}
 		else {
-			if(rect.height == 0) {
+			if(rect.height === 0) {
 				// set height to default
 				svg.style.height = defaultHeightStyle;
 			}
@@ -37,12 +37,12 @@ var AvGraphics = (function() {
 			var width = rect.height * aspectRatio;
 			svg.style.width = width+'px';
 		}
-	};
+	}
 
 	// Initialcap
 	function initialCap(x) {
 		return x[0].toUpperCase() + x.substring(1);
-	};
+	}
 
 	// build an svg element with given name, attributes and data
 	function makeSVG(tag, attrs, data) {
@@ -54,7 +54,7 @@ var AvGraphics = (function() {
 			el.appendChild( document.createTextNode(data) );
 		}
 		return el;
-	};
+	}
 
 	
 	return {
@@ -143,7 +143,7 @@ var AvGraphics = (function() {
 			for(var i = 0; i < data.length; i++) {
 				var danger = this.getDangerInfo(data[i]);
 
-				var top = (i == 0);
+				var top = (i === 0);
 
 				var overlay = false;
 				if(danger.pockets) {
@@ -194,8 +194,8 @@ var AvGraphics = (function() {
 
 			removeChildren(svg);
 
-			for(var i in polys) {
-				var poly = polys[i];
+			for(var j in polys) {
+				var poly = polys[j];
 
 				var points = poly.points
 					.map(function(x) {
@@ -203,12 +203,10 @@ var AvGraphics = (function() {
 					})
 					.join(' ');
 
-				var style = 'fill:' + poly.fill + '; stroke:black; stroke-width:1';
-
 				appendChild(svg,
 					makeSVG('polygon', {
 						'points': points,
-						'style': style
+						'style': 'fill:' + poly.fill + '; stroke:black; stroke-width:1'
 					})
 				);
 
@@ -225,13 +223,11 @@ var AvGraphics = (function() {
 				if(poly.overlay) {
 					var circ = poly.overlay.circ;
 
-					var style = 'fill:' + circ.fill + '; opacity: 1.0; stroke:black; stroke-width:0.4';
-
 					appendChild(svg,
 						makeSVG('circle', {
 							'cx': circ.x, 'cy': circ.y,
 							'r': circ.radius,
-							'style': style
+							'style': 'fill:' + circ.fill + '; opacity: 1.0; stroke:black; stroke-width:0.4'
 						})
 					);
 
@@ -287,8 +283,8 @@ var AvGraphics = (function() {
 
 			removeChildren(svg);
 
-			for(var i in rects) {
-				var rect = rects[i];
+			for(var j in rects) {
+				var rect = rects[j];
 
 				var style = 'fill:' + rect.fill + '; stroke:black; stroke-width:1';
 
@@ -379,7 +375,7 @@ var AvGraphics = (function() {
 						toc(outer0, h2)
 					];
 
-					if(i == 0) {
+					if(i === 0) {
 						points.push(
 							toc(0, 0)
 						);
