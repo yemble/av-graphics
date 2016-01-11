@@ -7,12 +7,13 @@ A small lib to render common avalanche bulletin images (elevation pyramid, rose,
 Hardcoded data.. could be from JSON back-end instead.
 
 ```html
-<svg id="pyramid1"/>
+<svg id="pyramid"/>
+<svg id="rose"/>
 
 <script src="avgraphics.js"></script>
 <script type="text/javascript">
     // draw an elevation pyramid
-    AvGraphics.drawPyramid(document.getElementById('pyramid1'), {
+    AvGraphics.drawPyramid(document.getElementById('pyramid'), {
         data : [
             {'danger':4},
             {'danger':3, 'pockets': true},
@@ -21,7 +22,7 @@ Hardcoded data.. could be from JSON back-end instead.
     });
 
     // draw a rose
-	AvGraphics.drawRose(document.getElementById('rose1'), {
+	AvGraphics.drawRose(document.getElementById('rose'), {
 		data : [
 			{"dangers": {
 				"nw": 3, "n": 2, "ne": 2,
