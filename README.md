@@ -9,12 +9,13 @@ A small lib to render common avalanche bulletin images via JSON and SVG.
 <script type="text/javascript">
     AvGraphics.drawPyramid(document.getElementById('pyramid1'), {
         data : {
-            "alp": "5:extreme",
-            "tl": "4:high:pockets",
-            "btl": "2:moderate"
+            "alp": "4:high",
+            "tl": "3:considerable:pockets",
+            "btl": "1:low:pockets"
         }
     });
 </script>
 ```
 
-![Example output](http://i.imgur.com/WH5zlmA.png)
+<img src="http://i.imgur.com/yc7ZTBl.png" alt="Sample output" style="max-width: 90%;"/>
+

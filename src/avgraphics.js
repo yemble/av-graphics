@@ -21,8 +21,6 @@ var AvGraphics = (function() {
 	function setContainerSize(svg, aspectWidth, aspectHeight, defaultHeightStyle) {
 		var rect = svg.getBoundingClientRect();
 
-		console.log(rect);
-
 		if(rect.width > rect.height) {
 			// set height by aspect
 
@@ -153,12 +151,12 @@ var AvGraphics = (function() {
 					var itemSize = fullHeight * 0.8 / nLayers * 0.5;
 
 					overlay = {
-						rect: {
-							x: midx+margin,
-							y: margin+layerHeight*(i+0.5)/2,
-							width: itemSize, height: itemSize
+						circ: {
+							x: midx+margin + itemSize/2 + itemSize/3,
+							y: margin+layerHeight*(i+0.5) + itemSize/2,
+							radius: itemSize/2,
+							fill: danger.pockets.fill
 						},
-						fill: danger.pockets.fill,
 						textFore: danger.pockets.number == 5 ? 'white' : 'black',
 						text: "P"
 					};
@@ -228,7 +226,31 @@ var AvGraphics = (function() {
 
 				// for pockets indicator
 				if(poly.overlay) {
-					// TODO: render rect with given text and colours
+					var circ = poly.overlay.circ;
+
+					var style = 'fill:' + circ.fill + '; opacity: 1.0; stroke:black; stroke-width:0.4';
+
+					appendChild(svg,
+						/*makeSVG('rect', {
+							'x': rect.x, 'y': rect.y,
+							'width': rect.width, 'height': rect.height,
+							'style': style
+						})*/
+						makeSVG('circle', {
+							'cx': circ.x, 'cy': circ.y,
+							'r': circ.radius,
+							'style': style
+						})
+					);
+
+					appendChild(svg,
+						makeSVG('text', {
+							'x': circ.x,
+							'y': circ.y,
+							'text-anchor': 'middle',
+							'style': 'dominant-baseline:central; font-size: 40%; stroke-width:0.6; stroke: ' + poly.overlay.textFore + '; fill: ' + poly.overlay.textFore
+						}, String(poly.overlay.text))
+					);
 				}
 
 			}
