@@ -18,6 +18,29 @@ var AvGraphics = (function() {
 		parent.appendChild(child);
 	};
 
+	function setContainerSize(svg, aspectWidth, aspectHeight, defaultHeightStyle) {
+		var rect = svg.getBoundingClientRect();
+
+		console.log(rect);
+
+		if(rect.width > rect.height) {
+			// set height by aspect
+
+			var height = rect.width * aspectHeight / aspectWidth;
+			svg.style.height = height+'px';
+		}
+		else {
+			if(rect.height == 0) {
+				// set height to default
+				svg.style.height = defaultHeight;
+			}
+
+			// set width by aspect
+			var width = rect.height * aspectWidth / aspectHeight;
+			svg.style.width = width+'px';
+		}
+	};
+
 	// Initialcap
 	function initialCap(x) {
 		return x[0].toUpperCase() + x.substring(1);
@@ -39,7 +62,7 @@ var AvGraphics = (function() {
 	return {
 		config: {
 			colors: {
-				low: 'lightgreen',
+				low: 'lime',
 				moderate: 'yellow',
 				considerable: 'orange',
 				high: 'red',
@@ -57,7 +80,7 @@ var AvGraphics = (function() {
 
 		// expand a "3:considerable" string into useful attributes
 		decodeDanger: function(str) {
-			return [
+			var DANGERS = [
 				{
 					'number' : 1,
 					'title' : 'low',
@@ -83,7 +106,15 @@ var AvGraphics = (function() {
 					'title' : 'extreme',
 					'fill' : this.config.colors.extreme
 				}
-			][ String(str).split(':')[0]-1 ];
+			];
+
+			var parts = String(str).split(':');
+
+			var danger = DANGERS[ parts[0]-1 ];
+
+			danger.pockets = (danger.number < 5 && parts.length > 2 && parts[2] == 'pockets') ? DANGERS[ danger.number ] : false;
+
+			return danger;
 		},
 
 		drawPyramid: function(svg, config) {
@@ -101,8 +132,7 @@ var AvGraphics = (function() {
 
 			var xmax = 100, ymax = 100, margin = 10;
 
-			svg.setAttribute('width', '200px');
-			svg.setAttribute('height', '200px');
+			setContainerSize(svg, 1, 1, '10em');
 			svg.setAttribute('viewBox', '0 0 '+xmax+' '+ymax);
 
 			var fullHeight = ymax - margin*2;
@@ -116,16 +146,36 @@ var AvGraphics = (function() {
 			for(var name in data) {
 				var danger = this.decodeDanger(data[name]);
 
-				if(i == 0) {
+				var top = (i == 0);
+
+				var overlay = false;
+				if(danger.pockets) {
+					var itemSize = fullHeight * 0.8 / nLayers * 0.5;
+
+					overlay = {
+						rect: {
+							x: midx+margin,
+							y: margin+layerHeight*(i+0.5)/2,
+							width: itemSize, height: itemSize
+						},
+						fill: danger.pockets.fill,
+						textFore: danger.pockets.number == 5 ? 'white' : 'black',
+						text: "P"
+					};
+				}
+
+				if(top) {
 					polys.push({
 						points: [
 							[midx+margin,margin],
 							[midx+margin+layerWidthUnit,layerHeight+margin],
-							[midx+margin-layerWidthUnit,layerHeight+margin]],
+							[midx+margin-layerWidthUnit,layerHeight+margin]
+						],
 						fill: danger.fill,
 						centre: [midx+margin, margin+layerHeight*(i+0.5)],
 						text: String(danger.number),
-						textFore: danger.number == 5 ? 'white' : 'black'
+						textFore: danger.number == 5 ? 'white' : 'black',
+						overlay: overlay
 					});
 				}
 				else {
@@ -139,7 +189,8 @@ var AvGraphics = (function() {
 						fill: danger.fill,
 						centre: [midx+margin, margin+layerHeight*(i+0.5)],
 						text: String(danger.number),
-						textFore: danger.number == 5 ? 'white' : 'black'
+						textFore: danger.number == 5 ? 'white' : 'black',
+						overlay: overlay
 					});
 				}
 
@@ -174,9 +225,14 @@ var AvGraphics = (function() {
 						'style': 'dominant-baseline:central; font-size: 60%; stroke-width:1; stroke: ' + poly.textFore + '; fill: ' + poly.textFore
 					}, poly.text)
 				);
+
+				// for pockets indicator
+				if(poly.overlay) {
+					// TODO: render rect with given text and colours
+				}
+
 			}
 
-			// TODO: support pockets
 
 			// TODO: support elevation indications?
 		},
@@ -190,8 +246,7 @@ var AvGraphics = (function() {
 
 			var xmax = 150, ymax = 100, margin = 10;
 
-			svg.setAttribute('width', '300px');
-			svg.setAttribute('height', '200px');
+			setContainerSize(svg, 3, 2, '10em');
 			svg.setAttribute('viewBox', '0 0 '+xmax+' '+ymax);
 
 			var fullHeight = ymax - margin*2;
@@ -267,8 +322,7 @@ var AvGraphics = (function() {
 
 			var xmax = 200, ymax = 100, margin = 10, textMargin = 10;
 
-			svg.setAttribute('width', '400px');
-			svg.setAttribute('height', '200px');
+			setContainerSize(svg, 2, 1, '10em');
 			svg.setAttribute('viewBox', '0 0 '+xmax+' '+ymax);
 
 			var maxRadius = (ymax - textMargin*2 - margin*2) / 2;
