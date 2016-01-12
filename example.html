@@ -30,6 +30,7 @@
 		<section id="rose">
 		</section>
 			<div class="graphic"><svg id="rose1"/></div>
+			<div class="graphic"><svg id="rose1b"/></div>
 			<div class="graphic"><svg id="legend2" style="height: 8em" /></div>
 		</section>
 		</section>
@@ -80,6 +81,23 @@
 						"sw": 2, "s": 2, "se": 2
 					}},
 				]
+			});
+
+			AvGraphics.drawRose(document.getElementById('rose1b'), {
+				type: "mono",
+				build: {
+					onChange: function(data) {
+						console.log("New state for rose1b", data);
+					},
+					onSelection: function(activeSelection, valueCallback) {
+						if(activeSelection) {
+							// show input, on action call valueCallback(newValue)
+						}
+						else {
+							// hide input
+						}
+					}
+				}
 			});
 
 			AvGraphics.drawElevationLegend(document.getElementById('legend2'), {

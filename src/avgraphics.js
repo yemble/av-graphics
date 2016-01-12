@@ -289,13 +289,11 @@ var AvGraphics = (function() {
 			for(var j in rects) {
 				var rect = rects[j];
 
-				var style = 'fill:' + rect.fill + '; stroke:black; stroke-width:1';
-
 				appendChild(svg,
 					makeSVG('rect', {
 						'x': rect.x, 'y': rect.y,
 						'width': rect.width, 'height': rect.height,
-						'style': style
+						'style': 'fill:' + rect.fill + '; stroke:black; stroke-width:1'
 					})
 				);
 
@@ -322,7 +320,21 @@ var AvGraphics = (function() {
 		drawRose: function(svg, options) {
 			//console.log(['drawRose', svg, options]);
 
-			var data = options.data;
+			var emptyKey = 'dangers';
+			var emptyDefault = 1;
+			if(options.type && options.type == 'mono') {
+				emptyKey = 'selected';
+				emptyDefault = 0;
+			}
+			var emptyLevel = {};
+			emptyLevel[emptyKey] = {
+				"nw": emptyDefault, "n": emptyDefault, "ne": emptyDefault,
+				"w":  emptyDefault,                    "e":  emptyDefault,
+				"sw": emptyDefault, "s": emptyDefault, "se": emptyDefault
+			};
+			var emptyData = [emptyLevel, emptyLevel, emptyLevel];
+
+			var data = options.data || emptyData;
 
 			var nLayers = sizeOfObject(data);
 
@@ -353,6 +365,7 @@ var AvGraphics = (function() {
 					-r * Math.sin(a*Math.PI/180) + maxRadius+textMargin+margin
 				];
 			};
+
 
 			for(var i = 0; i < data.length; i++) {
 				var level = data[i];
@@ -394,7 +407,8 @@ var AvGraphics = (function() {
 					if(options.type && options.type == 'mono') {
 						polys.push({
 							points: points,
-							fill: (level.selected[heading] ? this.config.colors['selected'] : this.config.colors['unselected'])
+							fill: (level.selected[heading] ? this.config.colors.selected : this.config.colors.unselected),
+							number: level.selected[heading] ? 1 : 0
 						});
 					}
 					else {
@@ -402,7 +416,8 @@ var AvGraphics = (function() {
 
 						polys.push({
 							points: points,
-							fill: danger.fill
+							fill: danger.fill,
+							number: danger.number
 						});
 					}
 				}
@@ -437,14 +452,50 @@ var AvGraphics = (function() {
 					})
 					.join(' ');
 
-				var style = 'fill:' + poly.fill + '; stroke:black; stroke-width:1';
+				var element = makeSVG('polygon', {
+					'points': points,
+					'style': 'fill:' + poly.fill + '; stroke:black; stroke-width:1',
+					'data-selected': 'false',
+					'data-rose-type': (options.type == 'mono' ? 'mono' : 'default'),
+					'data-current-value': poly.number
+				});
 
-				appendChild(svg,
-					makeSVG('polygon', {
-						'points': points,
-						'style': style
-					})
-				);
+				if(options.build != 'undefined') {
+					var $this = this;
+	
+					element.addEventListener("click", function(event) {
+						var poly = event.target;
+
+						var roseType = poly.getAttribute('data-rose-type');
+						var currentValue = poly.getAttribute('data-current-value');
+
+						var selected = poly.getAttribute('data-selected') == 'true';
+						selected = !selected;
+
+						poly.setAttribute('data-selected', (selected ? 'true' : 'false'));
+
+						if(selected) {
+							poly.style.fill = 'pink';
+						}
+						else {
+							if(roseType == 'mono') {
+								var sel = parseInt(currentValue) === 1;
+								var col = sel ? $this.config.colors.selected : $this.config.colors.unselected;
+								poly.style.fill = col;
+							}
+							else {
+								var danger = $this.getDangerInfo({'danger': currentValue});
+								var col = danger.fill;
+								poly.style.fill = col;
+							}
+						}
+
+						// TODO: count selected
+						// call $this.options.build.onSelection(count > 0, function() { /* apply new value, deselect all, format data, call $...onChange(data) */ })
+					});
+				}
+
+				appendChild(svg, element);
 			}
 
 			for(var i in texts) {
@@ -512,13 +563,11 @@ var AvGraphics = (function() {
 			for(var i in rects) {
 				var rect = rects[i];
 
-				var style = 'fill:' + rect.fill + '; stroke:black; stroke-width:1';
-
 				appendChild(svg,
 					makeSVG('rect', {
 						'x': rect.x, 'y': rect.y,
 						'width': rect.width, 'height': rect.height,
-						'style': style
+						'style': 'fill:' + rect.fill + '; stroke:black; stroke-width:1'
 					})
 				);
 
