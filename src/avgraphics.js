@@ -64,7 +64,10 @@ var AvGraphics = (function() {
 				moderate: 'yellow',
 				considerable: 'orange',
 				high: 'red',
-				extreme: 'black'
+				extreme: 'black',
+
+				selected: 'grey',
+				unselected: 'white'
 			}
 		},
 
@@ -388,12 +391,20 @@ var AvGraphics = (function() {
 						);
 					}
 
-					var danger = this.getDangerInfo({danger: level.dangers[heading]});
+					if(options.type && options.type == 'mono') {
+						polys.push({
+							points: points,
+							fill: (level.selected[heading] ? this.config.colors['selected'] : this.config.colors['unselected'])
+						});
+					}
+					else {
+						var danger = this.getDangerInfo({danger: level.dangers[heading]});
 
-					polys.push({
-						points: points,
-						fill: danger.fill
-					});
+						polys.push({
+							points: points,
+							fill: danger.fill
+						});
+					}
 				}
 			}
 

@@ -32,6 +32,9 @@
 			<div class="graphic"><svg id="rose1"/></div>
 			<div class="graphic"><svg id="legend2" style="height: 8em" /></div>
 		</section>
+		</section>
+			<div class="graphic"><svg id="rose2"/></div>
+		</section>
 
 		<script type="text/javascript">
 		
@@ -81,6 +84,27 @@
 					{'label':"below treeline"}
 				],
 				aspect: 5/2
+			});
+
+			AvGraphics.drawRose(document.getElementById('rose2'), {
+				type: "mono",
+				data : [
+					{"selected": {
+						"nw": 0, "n": 0, "ne": 0,
+						"w":  0,         "e":  0,
+						"sw": 1, "s": 1, "se": 1
+					}},
+					{"selected": {
+						"nw": 0, "n": 0, "ne": 0,
+						"w":  1,         "e":  0,
+						"sw": 1, "s": 1, "se": 0
+					}},
+					{"selected": {
+						"nw": 0, "n": 0, "ne": 0,
+						"w":  0,         "e":  0,
+						"sw": 0, "s": 0, "se": 0
+					}},
+				]
 			});
 		
 		</script>
