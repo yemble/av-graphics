@@ -2,7 +2,9 @@
 
 A small client-side Javascript lib to render common avalanche bulletin images (elevation pyramid, rose, legends) from raw data.
 
-### Code snippet
+See example.html for detailed usage code.
+
+### Code snippets
 
 Hardcoded data.. could be from JSON back-end instead.
 
@@ -44,5 +46,5 @@ Hardcoded data.. could be from JSON back-end instead.
 ```
 ### Sample output
 
-<img src="http://i.imgur.com/B6dLKW2.png" alt="Sample output" style="max-width: 90%;"/>
+<img src="http://i.imgur.com/cOKA39C.png" alt="Sample output" style="max-width: 90%;"/>
 

@@ -531,7 +531,185 @@ var AvGraphics = (function() {
 					}, initialCap(rect.labelText))
 				);
 			}
-		}
+		},
+
+		drawScale: function(svg, options) {
+			//console.log(['drawScale', svg, options]);
+
+			var nLayers = options.labels.length;
+
+			if(nLayers < 1) {
+				return;
+			}
+
+			var texts = [], polys = [];
+
+			var aspect = options.aspect || 1/1;
+
+			var xmax = 100*aspect, ymax = 100, margin = 10, textMargin = 5;
+
+			setContainerSize(svg, aspect, '10em');
+			svg.setAttribute('viewBox', '0 0 '+xmax+' '+ymax);
+
+			var fullHeight = ymax - margin*2;
+			var fullWidth = xmax - margin*2;
+			var layerHeight = fullHeight / nLayers;
+			var markerWidth = 10;
+
+			var sel = options.selected;
+
+			if(sel.length > 1 && sel[0] == sel[1]) {
+				sel = [sel[0]];
+			}
+
+			for(var i = 0; i < options.labels.length; i++) {
+				var label = options.labels[i];
+
+				var offx = margin + markerWidth + textMargin;
+				var offy = margin + (i+0.5) * layerHeight;
+
+				var highlighted = sel.length > 1 ? (sel[0] <= i && sel[1] >= i) : (i === sel[0]);
+
+				texts.push({
+					x: offx, y: offy,
+					highlighted: highlighted,
+					text: label
+				});
+			}
+
+			if(sel.length === 1) {
+				var top = margin + sel[0] * layerHeight;
+
+				var pad = layerHeight * 0.2;
+
+				polys.push({
+					points: [
+						[margin, top + pad],
+						[margin, top + layerHeight - pad],
+						[margin + markerWidth, top + layerHeight/2]
+					],
+					fill: this.config.colors.selected
+				});
+			}
+			else if(sel.length === 2) {
+				var top = margin + sel[0] * layerHeight;
+				var bot = margin + (sel[1]+1) * layerHeight;
+				var lineWidth = 2;
+
+				var markerHeight = Math.min(Math.max(layerHeight, 5), 10);
+				var pad = (layerHeight - markerHeight)/2;
+
+				polys.push({
+					points: [
+						[margin, top + pad],
+						[margin + markerWidth, top + pad],
+						[margin + lineWidth, top + layerHeight - pad],
+						[margin + lineWidth, bot - layerHeight + pad],
+						[margin + markerWidth, bot - pad],
+						[margin, bot - pad]
+					],
+					fill: this.config.colors.selected
+				});
+			}
+
+			removeChildren(svg);
+
+			for(var i in texts) {
+				var txt = texts[i];
+
+				var weight = txt.highlighted ? 0.6 : 0;
+
+				appendChild(svg,
+					makeSVG('text', {
+						'x': txt.x,
+						'y': txt.y,
+						'style': 'dominant-baseline:middle; font-size: 60%; stroke-width: ' + weight + '; stroke: black'
+					}, txt.text)
+				);
+			}
+
+			for(var i in polys) {
+				var poly = polys[i];
+
+				var points = poly.points
+					.map(function(x) {
+						return x.join(',');
+					})
+					.join(' ');
+
+				appendChild(svg,
+					makeSVG('polygon', {
+						'points': points,
+						'style': 'fill:' + poly.fill //+ '; stroke:black; stroke-width:1'
+					})
+				);
+			}
+		},
+
+		drawTrend: function(svg, options) {
+			//console.log(['drawTrend', svg, options]);
+
+			var aspect = options.aspect || 1/1;
+
+			var xmax = 100*aspect, ymax = 100, margin = 10;
+
+			setContainerSize(svg, aspect, '10em');
+			svg.setAttribute('viewBox', '0 0 '+xmax+' '+ymax);
+
+			var middle = ymax / 2;
+			var width = xmax - margin*2;
+			var thick = 2, headLength = width * 0.2, headWidth = thick * 4;
+			var angle = options.data.angle;
+
+
+			var circ = {
+				x: margin,
+				y: middle,
+				radius: 2 * thick
+			};
+
+			var arrow = {
+				points: [
+					[margin, middle - thick/2],
+					[margin + width - headLength, middle - thick/2],
+					[margin + width - headLength, middle - headWidth/2],
+					[margin + width, middle],
+					[margin + width - headLength, middle + headWidth/2],
+					[margin + width - headLength, middle + thick/2],
+					[margin, middle + thick/2]
+				],
+				rotate: -angle
+			};
+
+
+			removeChildren(svg);
+
+			// arrow:
+
+			var points = arrow.points
+				.map(function(x) {
+					return x.join(',');
+				})
+				.join(' ');
+
+			appendChild(svg,
+				makeSVG('polygon', {
+					'points': points,
+					'style': 'fill:' + this.config.colors.selected,
+					'transform': 'rotate(' + arrow.rotate + ' ' + margin + ' ' + middle + ')'
+				})
+			);
+
+			// dot:
+
+			appendChild(svg,
+				makeSVG('circle', {
+					'cx': circ.x, 'cy': circ.y,
+					'r': circ.radius,
+					'style': 'fill:' + circ.fill + '; opacity: 1.0;'// stroke:black; stroke-width:0.4'
+				})
+			);
+		},
 
 	};
 })();
