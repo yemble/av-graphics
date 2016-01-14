@@ -59,5 +59,5 @@ Hardcoded data.. could be from JSON back-end instead.
 ```
 ### Sample output
 
-<img src="http://i.imgur.com/cOKA39C.png" alt="Sample output" style="max-width: 90%;"/>
+<img src="http://i.imgur.com/HflTd85.png" alt="Sample output" style="max-width: 90%;"/>
 
