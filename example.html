@@ -24,21 +24,26 @@
 		</style>
 	</head>
 	<body class="force">
+		<h1>av-graphics test</h1>
+		<h2>Data driven graphics</h2>
 		<section id="pyramid">
 			<div class="graphic"><svg id="pyramid1"/></div>
 			<div class="graphic"><svg id="legend1"/></div>
 		<section id="rose">
 		</section>
 			<div class="graphic"><svg id="rose1"/></div>
-			<div class="graphic"><svg id="rose1b"/></div>
 			<div class="graphic"><svg id="legend2" style="height: 8em" /></div>
 		</section>
-		</section>
+		<section>
 			<div class="graphic"><svg id="rose2"/></div>
-			<div class="graphic"><svg id="rose2b"/></div>
 			<div class="graphic"><svg id="scale1"/></div>
 			<div class="graphic"><svg id="scale2"/></div>
 			<div class="graphic"><svg id="scale3"/></div>
+		</section>
+		<h2>Interactive rose builders</h2>
+		<section>
+			<div class="graphic"><svg id="rose1b"/></div>
+			<div class="graphic"><svg id="rose2b"/></div>
 		</section>
 
 		<script type="text/javascript">
@@ -52,6 +57,8 @@
 				}
 			});
 
+			// a basic three elevation pyramid
+
 			AvGraphics.drawPyramid(document.getElementById('pyramid1'), {
 				data : [
 					{'danger':4},
@@ -60,9 +67,13 @@
 				]
 			});
 
+			// legend for pyramid
+
 			AvGraphics.drawDangerLegend(document.getElementById('legend1'), {
 				"showPockets" : true
 			});
+
+			// danger rose
 
 			AvGraphics.drawRose(document.getElementById('rose1'), {
 				data : [
@@ -84,27 +95,8 @@
 				]
 			});
 
-			AvGraphics.drawRose(document.getElementById('rose1b'), {
-				build: {
-					onChange: function(data) {
-						console.log("New state for rose1b", data);
-					},
-					onSelection: function(activeSelection, roseType, valueCallback) {
-						if(window.rose1bTimer) {
-							clearTimeout(window.rose1bTimer);
-						}
-						if(activeSelection) {
-							window.rose1bTimer = setTimeout(function() {
-								AvGraphics.basicPromptHelper(function(input) {
-									if(['0','1','2','3','4','5'].indexOf(input) >= 0) {
-										valueCallback(input);
-									}
-								});
-							}, 2000);
-						}
-					}
-				}
-			});
+			// elevation legend for rose
+			// with tweaked aspect ratio to fit text
 
 			AvGraphics.drawElevationLegend(document.getElementById('legend2'), {
 				data : [
@@ -114,6 +106,8 @@
 				],
 				aspect: 5/2
 			});
+
+			// a mono rose, with simple on/off segments
 
 			AvGraphics.drawRose(document.getElementById('rose2'), {
 				type: "mono",
@@ -136,15 +130,7 @@
 				]
 			});
 
-			AvGraphics.drawRose(document.getElementById('rose2b'), {
-				type: "mono",
-				build: {
-					onChange: function(data) {
-						console.log("New state for rose2b", data);
-					}
-					// no selection callback for mono rose, simple toggle.
-				}
-			});
+			// single value scale
 
 			AvGraphics.drawScale(document.getElementById('scale1'), {
 				labels : [
@@ -157,6 +143,8 @@
 				selected: [3]
 			});
 
+			// range scale
+
 			AvGraphics.drawScale(document.getElementById('scale2'), {
 				labels : [
 					"Large",
@@ -166,12 +154,51 @@
 				selected: [0,1]
 			});
 
+			// trend indicator
+
 			AvGraphics.drawTrend(document.getElementById('scale3'), {
 				data : {
 					'angle': -30
 				}
 			});
-		
+			
+			// interactive builder for danger rose
+			// uses dumb javascript input() to get values from user (after 2 second delay). would replace with a nice html dialog in practice
+
+			AvGraphics.drawRose(document.getElementById('rose1b'), {
+				build: {
+					onChange: function(data) {
+						console.log("New state for rose1b", data);
+					},
+					onSelection: function(activeSelection, roseType, valueCallback) {
+						if(window.rose1bTimer) {
+							clearTimeout(window.rose1bTimer);
+						}
+						if(activeSelection) {
+							window.rose1bTimer = setTimeout(function() {
+								var input = prompt('Set value for selected segments', '');
+
+								if(['1','2','3','4','5'].indexOf(input) >= 0) {
+									valueCallback(input);
+								}
+							}, 2000);
+						}
+					}
+				}
+			});
+
+			// interactive builder for mono rose
+
+			AvGraphics.drawRose(document.getElementById('rose2b'), {
+				type: "mono",
+				build: {
+					onChange: function(data) {
+						console.log("New state for rose2b", data);
+					}
+					// no selection callback for mono rose, simple toggle.
+				}
+			});
+
 		</script>
 
 	</body>

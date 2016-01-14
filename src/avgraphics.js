@@ -591,12 +591,6 @@ var AvGraphics = (function() {
 			return data;
 		},
 
-		basicPromptHelper: function(valueCallback) {
-			var input = prompt('Set value for selected segments', '');
-
-			valueCallback(input);
-		},
-
 
 		drawElevationLegend: function(svg, options) {
 			//console.log(['drawElevationLegend', svg, options]);
