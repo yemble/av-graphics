@@ -14,7 +14,7 @@ Render common avalanche bulletin images in the browser via SVG from JSON data.
 
 * SVG based interactive rose builder widget, generating valid data suitable for rendering
 
-### Code snippets
+## Code
 
 See [example.html](example.html) for detailed usage.
 
@@ -54,7 +54,7 @@ See [example.html](example.html) for detailed usage.
 		]
 	});   
 ```
-### Sample output
+## Example output
 
 <img src="http://i.imgur.com/HflTd85.png" alt="Sample output" style="max-width: 90%;"/>
 
