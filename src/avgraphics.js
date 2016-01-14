@@ -334,6 +334,8 @@ var AvGraphics = (function() {
 			};
 			var emptyData = [emptyLevel, emptyLevel, emptyLevel];
 
+			if(typeof(options.type) === 'undefined') { options.type = 'danger'; }
+
 			var data = options.data || emptyData;
 
 			var nLayers = sizeOfObject(data);
@@ -408,7 +410,9 @@ var AvGraphics = (function() {
 						polys.push({
 							points: points,
 							fill: (level.selected[heading] ? this.config.colors.selected : this.config.colors.unselected),
-							number: level.selected[heading] ? 1 : 0
+
+							number: level.selected[heading] ? 1 : 0,
+							elevation: i, heading: heading
 						});
 					}
 					else {
@@ -417,7 +421,9 @@ var AvGraphics = (function() {
 						polys.push({
 							points: points,
 							fill: danger.fill,
-							number: danger.number
+
+							number: danger.number,
+							elevation: i, heading: heading
 						});
 					}
 				}
@@ -457,10 +463,12 @@ var AvGraphics = (function() {
 					'style': 'fill:' + poly.fill + '; stroke:black; stroke-width:1',
 					'data-selected': 'false',
 					'data-rose-type': (options.type == 'mono' ? 'mono' : 'default'),
-					'data-current-value': poly.number
+					'data-current-value': poly.number,
+					'data-elevation': poly.elevation,
+					'data-heading': poly.heading
 				});
 
-				if(options.build != 'undefined') {
+				if(typeof(options.build) !== 'undefined') {
 					var $this = this;
 	
 					element.addEventListener("click", function(event) {
@@ -469,29 +477,64 @@ var AvGraphics = (function() {
 						var roseType = poly.getAttribute('data-rose-type');
 						var currentValue = poly.getAttribute('data-current-value');
 
-						var selected = poly.getAttribute('data-selected') == 'true';
-						selected = !selected;
+						if(options.type === 'mono') {
+							// toggle process (no selection) for mono rose
 
-						poly.setAttribute('data-selected', (selected ? 'true' : 'false'));
+							if(currentValue == 0) {
+								poly.setAttribute('data-current-value', '1');
+								poly.style.fill = $this.config.colors.selected;
+							}
+							else {
+								poly.setAttribute('data-current-value', '0');
+								poly.style.fill = $this.config.colors.unselected;
+							}
 
-						if(selected) {
-							poly.style.fill = 'pink';
+							// obtain complete rose data & notify
+							var data = $this.getRoseData(poly.parentNode);
+							options.build.onChange(data);
 						}
 						else {
-							if(roseType == 'mono') {
-								var sel = parseInt(currentValue) === 1;
-								var col = sel ? $this.config.colors.selected : $this.config.colors.unselected;
-								poly.style.fill = col;
+							// selection process for danger rose
+
+							var selected = poly.getAttribute('data-selected') == 'true';
+							selected = !selected;
+
+							poly.setAttribute('data-selected', (selected ? 'true' : 'false'));
+
+							if(selected) {
+								poly.style.fill = 'pink';
 							}
 							else {
 								var danger = $this.getDangerInfo({'danger': currentValue});
 								var col = danger.fill;
 								poly.style.fill = col;
 							}
-						}
 
-						// TODO: count selected
-						// call $this.options.build.onSelection(count > 0, function() { /* apply new value, deselect all, format data, call $...onChange(data) */ })
+							var peers = $this.getSelectedChildren(poly.parentNode);
+
+							options.build.onSelection(peers.length > 0, options.type, function(valueToApply) {
+								if(valueToApply < 1 || valueToApply > 5) {
+									return;
+								}
+
+								var info = $this.getDangerInfo({danger: valueToApply});
+
+								for(var pi = 0; pi < peers.length; pi++) {
+									var peer = peers[pi];
+
+									// set new value & fill colour
+									peer.setAttribute('data-current-value', valueToApply);
+									peer.style.fill = info.fill;
+
+									// clear selection
+									peer.setAttribute('data-selected', 'false');
+								}
+
+								// obtain complete rose data & notify
+								var data = $this.getRoseData(poly.parentNode);
+								options.build.onChange(data);
+							});
+						}
 					});
 				}
 
@@ -511,6 +554,49 @@ var AvGraphics = (function() {
 				);
 			}
 		},
+
+		getSelectedChildren: function(parent) {
+			var peers = [];
+
+			for(var i = 0; i < parent.childNodes.length; i++) {
+				var peer = parent.childNodes[i];
+				var sel = peer.getAttribute('data-selected');
+				if(sel == 'true') {
+					peers.push(peer);
+				}
+			}
+
+			return peers;
+		},
+
+		getRoseData: function(parent) {
+			var data = [];
+
+			for(var i = 0; i < parent.childNodes.length; i++) {
+				var node = parent.childNodes[i];
+
+				var elevation = parseInt( node.getAttribute('data-elevation') );
+				var heading = node.getAttribute('data-heading');
+				var value = parseInt( node.getAttribute('data-current-value') );
+
+				if(heading && heading.length > 0 && elevation >= 0 && value >= 0) {
+					while(data.length < elevation + 1) {
+						data[data.length] = {};
+					}
+
+					data[parseInt(elevation)][heading] = parseInt(value);
+				}
+			}
+
+			return data;
+		},
+
+		basicPromptHelper: function(valueCallback) {
+			var input = prompt('Set value for selected segments', '');
+
+			valueCallback(input);
+		},
+
 
 		drawElevationLegend: function(svg, options) {
 			//console.log(['drawElevationLegend', svg, options]);
