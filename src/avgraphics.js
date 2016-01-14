@@ -67,7 +67,9 @@ var AvGraphics = (function() {
 				extreme: 'black',
 
 				selected: 'grey',
-				unselected: 'white'
+				unselected: 'white',
+
+				activeSelection: 'pink'
 			}
 		},
 
@@ -502,7 +504,7 @@ var AvGraphics = (function() {
 							poly.setAttribute('data-selected', (selected ? 'true' : 'false'));
 
 							if(selected) {
-								poly.style.fill = 'pink';
+								poly.style.fill = $this.config.colors.activeSelection;
 							}
 							else {
 								var danger = $this.getDangerInfo({'danger': currentValue});
