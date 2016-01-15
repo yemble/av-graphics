@@ -6,7 +6,7 @@ Render common avalanche bulletin images in the browser via SVG from JSON data.
 
 * pyramid & legend
 * danger rose & legend
-* "mono" rose for indicating a region
+* monochrome rose for indicating a region
 * vertical scales (single and range)
 * trend arrow
 
