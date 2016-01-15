@@ -340,7 +340,7 @@ var AvGraphics = (function() {
 
 			var data = options.data || emptyData;
 
-			var nLayers = sizeOfObject(data);
+			var nLayers = data.length;
 
 			if(nLayers < 1) {
 				return;
@@ -492,7 +492,7 @@ var AvGraphics = (function() {
 							}
 
 							// obtain complete rose data & notify
-							var data = $this.getRoseData(poly.parentNode);
+							var data = $this.getRoseData(poly.parentNode, options.type);
 							options.build.onChange(data);
 						}
 						else {
@@ -533,7 +533,7 @@ var AvGraphics = (function() {
 								}
 
 								// obtain complete rose data & notify
-								var data = $this.getRoseData(poly.parentNode);
+								var data = $this.getRoseData(poly.parentNode, options.type);
 								options.build.onChange(data);
 							});
 						}
@@ -571,8 +571,10 @@ var AvGraphics = (function() {
 			return peers;
 		},
 
-		getRoseData: function(parent) {
+		getRoseData: function(parent, type) {
 			var data = [];
+
+			var dataKey = type == 'mono' ? 'selected' : 'dangers';
 
 			for(var i = 0; i < parent.childNodes.length; i++) {
 				var node = parent.childNodes[i];
@@ -583,10 +585,13 @@ var AvGraphics = (function() {
 
 				if(heading && heading.length > 0 && elevation >= 0 && value >= 0) {
 					while(data.length < elevation + 1) {
-						data[data.length] = {};
+						var newLayer = {};
+						newLayer[dataKey] = {};
+
+						data[data.length] = newLayer;
 					}
 
-					data[parseInt(elevation)][heading] = parseInt(value);
+					data[parseInt(elevation)][dataKey][heading] = parseInt(value);
 				}
 			}
 
