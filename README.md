@@ -2,7 +2,7 @@
 
 Render common avalanche bulletin images in the browser via SVG from JSON data.
 
-### Static
+**Static**
 
 * pyramid & legend
 * danger rose & legend
@@ -10,13 +10,13 @@ Render common avalanche bulletin images in the browser via SVG from JSON data.
 * vertical scales (single and range)
 * trend arrow
 
-### Interactive
+**Interactive**
 
 * SVG based interactive rose builder widget, generating valid data suitable for rendering
 
-## Code
+## Partial example code
 
-See [example.html](example.html) for detailed usage.
+See [example.html](example.html) for complete example.
 
 ```html
 <svg id="pyramid"/>
