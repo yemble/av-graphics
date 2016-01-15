@@ -58,3 +58,6 @@ See [example.html](example.html) for detailed usage.
 
 <img src="http://i.imgur.com/HflTd85.png" alt="Sample output" style="max-width: 90%;"/>
 
+## Contact
+
+Zach <zach@y3m.net>
