@@ -1,23 +1,16 @@
 var AvGraphics = (function() {
 
-	// number of key/value pairs in an object
-	function sizeOfObject(x) {
-		var size = 0, key;
-	    for (key in x) {
-	        if (x.hasOwnProperty(key)) size++;
-	    }
-	    return size;
-	}
-
-	// DOM empty wrapper
+	// Utility function: DOM empty wrapper
 	function removeChildren(parent) {
 		parent.innerHTML = '';
 	}
-	// DOM append wrapper
+
+	// Utility function: DOM append wrapper
 	function appendChild(parent, child) {
 		parent.appendChild(child);
 	}
 
+	// Utility function: resize the given svg element to match aspect. if 0x0, use default height as basis for size.
 	function setContainerSize(svg, aspectRatio, defaultHeightStyle) {
 		var rect = svg.getBoundingClientRect();
 
@@ -39,12 +32,12 @@ var AvGraphics = (function() {
 		}
 	}
 
-	// Initialcap
+	// Utility function: Initialcap
 	function initialCap(x) {
 		return x[0].toUpperCase() + x.substring(1);
 	}
 
-	// build an svg element with given name, attributes and data
+	// Utility function: build an svg element with given name, attributes and data
 	function makeSVG(tag, attrs, data) {
 		var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
 		for (var k in attrs) {
@@ -58,6 +51,7 @@ var AvGraphics = (function() {
 
 	
 	return {
+		// shared config for the whole class
 		config: {
 			colors: {
 				low: 'lime',
@@ -73,6 +67,7 @@ var AvGraphics = (function() {
 			}
 		},
 
+		// apply new config settings
 		configure: function(newConfig) {
 			if(newConfig.colors) {
 				for(var x in newConfig.colors) {
@@ -81,7 +76,8 @@ var AvGraphics = (function() {
 			}
 		},
 
-		// expand a "3:considerable" string into useful attributes
+
+		// expand a {danger: 3} object into useful attributes
 		getDangerInfo: function(data) {
 			var CONVENTION = [
 				{
@@ -117,6 +113,11 @@ var AvGraphics = (function() {
 
 			return info;
 		},
+
+
+		/******************************************************************
+			DANGER PYRAMID
+		 ******************************************************************/
 
 		drawPyramid: function(svg, options) {
 			//console.log(['drawPyramid', svg, options]);
@@ -248,6 +249,11 @@ var AvGraphics = (function() {
 			}
 		},
 
+
+		/******************************************************************
+			DANGER LEGEND
+		 ******************************************************************/
+
 		drawDangerLegend: function(svg, options) {
 			//console.log(['drawDangerLegend', svg, options]);
 
@@ -318,6 +324,11 @@ var AvGraphics = (function() {
 				);
 			}
 		},
+
+
+		/******************************************************************
+			ROSE
+		 ******************************************************************/
 
 		drawRose: function(svg, options) {
 			//console.log(['drawRose', svg, options]);
@@ -512,7 +523,7 @@ var AvGraphics = (function() {
 								poly.style.fill = col;
 							}
 
-							var peers = $this.getSelectedChildren(poly.parentNode);
+							var peers = $this.getRoseSelectedChildren(poly.parentNode);
 
 							options.build.onSelection(peers.length > 0, options.type, function(valueToApply) {
 								if(valueToApply < 1 || valueToApply > 5) {
@@ -557,7 +568,7 @@ var AvGraphics = (function() {
 			}
 		},
 
-		getSelectedChildren: function(parent) {
+		getRoseSelectedChildren: function(parent) {
 			var peers = [];
 
 			for(var i = 0; i < parent.childNodes.length; i++) {
@@ -571,10 +582,10 @@ var AvGraphics = (function() {
 			return peers;
 		},
 
-		getRoseData: function(parent, type) {
+		getRoseData: function(parent, roseType) {
 			var data = [];
 
-			var dataKey = type == 'mono' ? 'selected' : 'dangers';
+			var dataKey = (roseType == 'mono') ? 'selected' : 'dangers';
 
 			for(var i = 0; i < parent.childNodes.length; i++) {
 				var node = parent.childNodes[i];
@@ -598,6 +609,10 @@ var AvGraphics = (function() {
 			return data;
 		},
 
+
+		/******************************************************************
+			ELEVATION LEGEND
+		 ******************************************************************/
 
 		drawElevationLegend: function(svg, options) {
 			//console.log(['drawElevationLegend', svg, options]);
@@ -668,6 +683,11 @@ var AvGraphics = (function() {
 				);
 			}
 		},
+
+
+		/******************************************************************
+			VERTICAL SCALE
+		 ******************************************************************/
 
 		drawScale: function(svg, options) {
 			//console.log(['drawScale', svg, options]);
@@ -781,6 +801,11 @@ var AvGraphics = (function() {
 				);
 			}
 		},
+
+
+		/******************************************************************
+			TREND ARROW
+		 ******************************************************************/
 
 		drawTrend: function(svg, options) {
 			//console.log(['drawTrend', svg, options]);
