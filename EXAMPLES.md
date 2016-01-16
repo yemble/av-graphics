@@ -27,9 +27,11 @@ See `AvGraphics.config` object for default values.
 </script>
 ```
 
-Danger is on standard scale of 1-5. Pockets will add a P icon to indicate pockets of higher (+1) danger at given elevation.
+Each entry in the `data` array is an elevation in the pyramid, top to bottom.
+Each `danger` is on standard scale of 1-5.
+Optional `pockets` flag will add a P icon to indicate pockets of higher (+1) danger at given elevation.
 
-All images can be customised with an aspect setting to make the output wider if needed to accommodate text.
+All images in the library can be customised with an `aspect` to make the output wider if needed to accommodate text eg `16/9`.
 
 ## TODO
 
