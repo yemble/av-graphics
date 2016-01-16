@@ -14,13 +14,16 @@ Render common avalanche bulletin images in the browser via SVG from JSON data.
 
 * SVG based interactive rose builder widget, generating valid data suitable for rendering
 
-## Partial example code
+## Code
 
-See [example.html](example.html) for complete example.
+See [EXAMPLES.md](EXAMPLES.md) for detailed sample code and usage.
+
+See [example.html](example.html) for functional demo.
+
+**eg:**
 
 ```html
 <svg id="pyramid"/>
-<svg id="rose"/>
 
 <script src="avgraphics.js"></script>
 <script type="text/javascript">
@@ -32,32 +35,12 @@ See [example.html](example.html) for complete example.
             {'danger':1, 'pockets': true}
         ]
     });
-
-    // draw a rose
-	AvGraphics.drawRose(document.getElementById('rose'), {
-		data : [
-			{"dangers": {
-				"nw": 3, "n": 2, "ne": 2,
-				"w":  3,         "e":  2,
-				"sw": 4, "s": 4, "se": 3
-			}},
-			{"dangers": {
-				"nw": 2, "n": 2, "ne": 2,
-				"w":  3,         "e":  3,
-				"sw": 3, "s": 3, "se": 3
-			}},
-			{"dangers": {
-				"nw": 2, "n": 1, "ne": 1,
-				"w":  2,         "e":  1,
-				"sw": 2, "s": 2, "se": 2
-			}},
-		]
-	});   
+</script>
 ```
 ## Example output
 
-<img src="http://i.imgur.com/HflTd85.png" alt="Sample output" style="max-width: 90%;"/>
+<img src="http://i.imgur.com/HflTd85.png" alt="Sample output" style="max-width: 80%;"/>
 
 ## Contact
 
-Zach <zach@y3m.net>
+Zach Bagnall <zach@y3m.net>
