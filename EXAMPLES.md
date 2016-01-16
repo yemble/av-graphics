@@ -8,14 +8,16 @@ AvGraphics.configure({});
 
 Override default config. Elements not specified here will keep the default value.
 
-See AvGraphcs.config object for defaults.
+See `AvGraphics.config` object for default values.
 
 ## Danger pyramid
 
 ```html
-<svg id="rose" style="height:5em" />
+<svg id="image" style="height:5em" />
+
 <script type="text/javascript">
-	AvGraphics.drawPyramid({
+	var svg = document.getElementById("image");
+	AvGraphics.drawPyramid(svg, {
 		"data": [
 			{"danger": 3},
 			{"danger": 2, "pockets": true},
