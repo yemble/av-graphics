@@ -521,7 +521,7 @@ var AvGraphics = (function() {
 
 							var peers = $this.getRoseSelectedChildren(poly.parentNode);
 
-							options.build.onSelection(peers.length > 0, options.type, function(valueToApply) {
+							options.build.onSelection(peers.length > 0, function(valueToApply) {
 								if(valueToApply < 1 || valueToApply > 5) {
 									return;
 								}

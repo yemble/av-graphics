@@ -91,7 +91,7 @@
 						"nw": 2, "n": 1, "ne": 1,
 						"w":  2,         "e":  1,
 						"sw": 2, "s": 2, "se": 2
-					}},
+					}}
 				]
 			});
 
@@ -126,7 +126,7 @@
 						"nw": 0, "n": 0, "ne": 0,
 						"w":  0,         "e":  0,
 						"sw": 0, "s": 0, "se": 0
-					}},
+					}}
 				]
 			});
 
@@ -166,11 +166,11 @@
 			// uses dumb javascript input() to get values from user (after 2 second delay). would replace with a nice html dialog in practice
 
 			AvGraphics.drawRose(document.getElementById('rose1b'), {
-				build: {
+				"build": {
 					onChange: function(data) {
 						console.log("New state for rose1b", data);
 					},
-					onSelection: function(activeSelection, roseType, valueCallback) {
+					onSelection: function(activeSelection, valueCallback) {
 						if(window.rose1bTimer) {
 							clearTimeout(window.rose1bTimer);
 						}
@@ -190,8 +190,8 @@
 			// interactive builder for mono rose
 
 			AvGraphics.drawRose(document.getElementById('rose2b'), {
-				type: "mono",
-				build: {
+				"type": "mono",
+				"build": {
 					onChange: function(data) {
 						console.log("New state for rose2b", data);
 					}
