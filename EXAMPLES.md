@@ -118,6 +118,44 @@ If `showPockets` flag is on, then the "Pockets" icon will be included as well.
 Draw a rose.
 Setting the `type` to `mono` produces a single colour rose, so the `values` are just `0` or `1` instead of `1-5`.
 
+## Elevation legend
+
+```html
+<svg id="image" style="height:5em" />
+
+<script type="text/javascript">
+	AvGraphics.drawElevationLegend(document.getElementById("image"), {
+		"data" : [
+			{'label':"above 9,500ft"},
+			{'label':"near treeline"},
+			{'label':"below treeline"}
+		],
+		"aspect": 5/2 // you'll probably want to adjust the aspect to suit the text labels
+	});
+</script>
+```
+
+Used to indicate the elevation of the layers given in the diagrams.
+
+## Vertical scale
+
+```html
+<svg id="image" style="height:5em" />
+
+<script type="text/javascript">
+	AvGraphics.drawScale(document.getElementById("image"), {
+		"labels" : [
+			"Large",
+			"Medium",
+			"Small"
+		],
+		"values": [1,2] // select a range (offset from zero)
+	});
+</script>
+```
+
+For `values`, use a single value array to select a single item or a two value array for a range.
+
 ## TODO
 
 ..
