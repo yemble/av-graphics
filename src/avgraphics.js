@@ -51,7 +51,7 @@ var AvGraphics = (function() {
 
 	
 	return {
-		// shared config for the whole class
+		// shared config for the whole class; if updating this config, also update EXAMPLES.md
 		config: {
 			colors: {
 				low: 'lime',
@@ -333,17 +333,13 @@ var AvGraphics = (function() {
 		drawRose: function(svg, options) {
 			//console.log(['drawRose', svg, options]);
 
-			var emptyKey = 'dangers';
-			var emptyDefault = 1;
-			if(options.type && options.type == 'mono') {
-				emptyKey = 'selected';
-				emptyDefault = 0;
-			}
-			var emptyLevel = {};
-			emptyLevel[emptyKey] = {
-				"nw": emptyDefault, "n": emptyDefault, "ne": emptyDefault,
-				"w":  emptyDefault,                    "e":  emptyDefault,
-				"sw": emptyDefault, "s": emptyDefault, "se": emptyDefault
+			var emptyDefault = (options.type && options.type == 'mono') ? 0 : 1;
+			var emptyLevel = {
+				"values": {
+					"nw": emptyDefault, "n": emptyDefault, "ne": emptyDefault,
+					"w":  emptyDefault,                    "e":  emptyDefault,
+					"sw": emptyDefault, "s": emptyDefault, "se": emptyDefault
+				}
 			};
 			var emptyData = [emptyLevel, emptyLevel, emptyLevel];
 
@@ -422,14 +418,14 @@ var AvGraphics = (function() {
 					if(options.type && options.type == 'mono') {
 						polys.push({
 							points: points,
-							fill: (level.selected[heading] ? this.config.colors.selected : this.config.colors.unselected),
+							fill: (level.values[heading] ? this.config.colors.selected : this.config.colors.unselected),
 
-							number: level.selected[heading] ? 1 : 0,
+							number: level.values[heading] ? 1 : 0,
 							elevation: i, heading: heading
 						});
 					}
 					else {
-						var danger = this.getDangerInfo({danger: level.dangers[heading]});
+						var danger = this.getDangerInfo({danger: level.values[heading]});
 
 						polys.push({
 							points: points,
@@ -503,7 +499,7 @@ var AvGraphics = (function() {
 							}
 
 							// obtain complete rose data & notify
-							var data = $this.getRoseData(poly.parentNode, options.type);
+							var data = $this.getRoseData(poly.parentNode);
 							options.build.onChange(data);
 						}
 						else {
@@ -544,7 +540,7 @@ var AvGraphics = (function() {
 								}
 
 								// obtain complete rose data & notify
-								var data = $this.getRoseData(poly.parentNode, options.type);
+								var data = $this.getRoseData(poly.parentNode);
 								options.build.onChange(data);
 							});
 						}
@@ -582,10 +578,8 @@ var AvGraphics = (function() {
 			return peers;
 		},
 
-		getRoseData: function(parent, roseType) {
+		getRoseData: function(parent) {
 			var data = [];
-
-			var dataKey = (roseType == 'mono') ? 'selected' : 'dangers';
 
 			for(var i = 0; i < parent.childNodes.length; i++) {
 				var node = parent.childNodes[i];
@@ -596,13 +590,10 @@ var AvGraphics = (function() {
 
 				if(heading && heading.length > 0 && elevation >= 0 && value >= 0) {
 					while(data.length < elevation + 1) {
-						var newLayer = {};
-						newLayer[dataKey] = {};
-
-						data[data.length] = newLayer;
+						data[data.length] = {"values": {}};
 					}
 
-					data[parseInt(elevation)][dataKey][heading] = parseInt(value);
+					data[parseInt(elevation)].values[heading] = parseInt(value);
 				}
 			}
 
@@ -712,7 +703,7 @@ var AvGraphics = (function() {
 			var layerHeight = fullHeight / nLayers;
 			var markerWidth = 10;
 
-			var sel = options.selected;
+			var sel = options.values;
 
 			if(sel.length > 1 && sel[0] == sel[1]) {
 				sel = [sel[0]];

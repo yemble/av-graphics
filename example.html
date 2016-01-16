@@ -60,7 +60,7 @@
 			// a basic three elevation pyramid
 
 			AvGraphics.drawPyramid(document.getElementById('pyramid1'), {
-				data : [
+				"data" : [
 					{'danger':4},
 					{'danger':2, 'pockets': true},
 					{'danger':1}
@@ -76,18 +76,18 @@
 			// danger rose
 
 			AvGraphics.drawRose(document.getElementById('rose1'), {
-				data : [
-					{"dangers": {
+				"data" : [
+					{"values": {
 						"nw": 3, "n": 2, "ne": 2,
 						"w":  3,         "e":  2,
 						"sw": 4, "s": 4, "se": 3
 					}},
-					{"dangers": {
+					{"values": {
 						"nw": 2, "n": 2, "ne": 2,
 						"w":  3,         "e":  3,
 						"sw": 3, "s": 3, "se": 3
 					}},
-					{"dangers": {
+					{"values": {
 						"nw": 2, "n": 1, "ne": 1,
 						"w":  2,         "e":  1,
 						"sw": 2, "s": 2, "se": 2
@@ -99,7 +99,7 @@
 			// with tweaked aspect ratio to fit text
 
 			AvGraphics.drawElevationLegend(document.getElementById('legend2'), {
-				data : [
+				"data" : [
 					{'label':"above 9,500ft"},
 					{'label':"near treeline"},
 					{'label':"below treeline"}
@@ -110,19 +110,19 @@
 			// a mono rose, with simple on/off segments
 
 			AvGraphics.drawRose(document.getElementById('rose2'), {
-				type: "mono",
-				data : [
-					{"selected": {
+				"type": "mono",
+				"data" : [
+					{"values": {
 						"nw": 0, "n": 0, "ne": 0,
 						"w":  0,         "e":  0,
 						"sw": 1, "s": 1, "se": 1
 					}},
-					{"selected": {
+					{"values": {
 						"nw": 0, "n": 0, "ne": 0,
 						"w":  1,         "e":  0,
 						"sw": 1, "s": 1, "se": 0
 					}},
-					{"selected": {
+					{"values": {
 						"nw": 0, "n": 0, "ne": 0,
 						"w":  0,         "e":  0,
 						"sw": 0, "s": 0, "se": 0
@@ -133,31 +133,31 @@
 			// single value scale
 
 			AvGraphics.drawScale(document.getElementById('scale1'), {
-				labels : [
+				"labels" : [
 					"Certain",
 					"Very likely",
 					"Likely",
 					"Possible",
 					"Unlikely"
 				],
-				selected: [3]
+				"values": [3]
 			});
 
 			// range scale
 
 			AvGraphics.drawScale(document.getElementById('scale2'), {
-				labels : [
+				"labels" : [
 					"Large",
 					"Medium",
 					"Small"
 				],
-				selected: [0,1]
+				"values": [0,1]
 			});
 
 			// trend indicator
 
 			AvGraphics.drawTrend(document.getElementById('scale3'), {
-				data : {
+				"data" : {
 					'angle': -30
 				}
 			});
