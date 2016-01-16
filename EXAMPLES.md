@@ -27,6 +27,8 @@ Override default config. Elements not specified here will keep the default value
 
 ## Danger pyramid
 
+<img src="https://i.imgur.com/7pQWEdQ.png" alt="Sample output"/>
+
 ```html
 <svg id="image" style="height:5em" />
 
@@ -51,6 +53,8 @@ All images in the library can be customised with an `aspect` to make the output 
 
 ## Danger legend
 
+<img src="https://i.imgur.com/KBIUDDa.png" alt="Sample output"/>
+
 ```html
 <svg id="image" style="height:5em" />
 
@@ -66,6 +70,8 @@ A vertical coloured legend for the standard danger levels.
 If `showPockets` flag is on, then the "Pockets" icon will be included as well.
 
 ## Rose
+
+<img src="https://i.imgur.com/5KoRNKc.png" alt="Sample output"/>
 
 ```html
 <!-- two images, one danger coloured and one monochrome -->
@@ -122,6 +128,8 @@ For a widget to build this kind of data, see interactive rose widget below.
 
 ## Elevation legend
 
+<img src="https://i.imgur.com/9wF4XiS.png" alt="Sample output"/>
+
 ```html
 <svg id="image" style="height:5em" />
 
@@ -140,6 +148,8 @@ For a widget to build this kind of data, see interactive rose widget below.
 Used to indicate the elevation of the layers given in the diagrams.
 
 ## Vertical scale
+
+<img src="https://i.imgur.com/MouZ2ZC.png" alt="Sample output"/>
 
 ```html
 <svg id="image" style="height:5em" />
@@ -160,6 +170,8 @@ For `values`, use a single value array to select a single item or a two value ar
 
 ## Trend arrow
 
+<img src="https://i.imgur.com/37efvi9.png" alt="Sample output"/>
+
 ```html
 <svg id="image" style="height:5em" />
 
@@ -175,6 +187,8 @@ For `values`, use a single value array to select a single item or a two value ar
 Use positive `angle` for up tilt, negative for down. `0` for straight.
 
 ## Interactive rose builder widget
+
+<img src="https://i.imgur.com/51Tnlnk.png" alt="Sample output"/>
 
 ```html
 <svg id="builder" style="height:8em" />
